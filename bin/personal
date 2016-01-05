@@ -1,0 +1,99 @@
+#!/usr/bin/env ruby
+
+require "thor"
+require "colorize"
+require "personal.rb"
+
+
+class PersonalCommand < Thor
+
+	desc "bydate", "List entries by given year,month and/or day"
+	method_option :year, :type => :numeric, :required => true, :aliases => "-y", :desc => "The year in YYYY-format."
+	method_option :month, :type => :numeric, :required => true, :aliases => "-m", :desc => "The month (1-12)."
+	method_option :day, :type => :numeric, :required => false, :aliases => "-d", :desc => "The day (1-31)."
+	def bydate
+		init
+		if options[:day].nil?
+			present @db_persistence.entries_by_year_and_month(options[:year], options[:month])
+		else
+			present @db_persistence.entries_by_year_month_day(options[:year], options[:month], options[:day])
+		end
+		
+		@db_persistence.close_db
+	end
+
+	desc "latest", "List the latest entries that have been saved."
+	method_option :number, :type => :numeric, :required => false, :default => 10, :aliases => "-n", :desc => "The number of entries to list."
+	def latest
+		init
+		present @db_persistence.latest_entries(options[:number])
+		@db_persistence.close_db
+	end
+
+	desc "add", "Add a new entry to the personal diary."
+	method_option :text, :type => :string, :required => true, :aliases => "-t", :desc => "The text to save."
+	def add
+		init
+		@db_persistence.create_entry(options[:text])
+
+		if @db_persistence.db.changes > 0
+			present @db_persistence.latest_entry
+		else
+			present_message("Could not add the entry", :light_red)
+		end
+		@db_persistence.close_db
+	end
+
+	desc "delete", "Delete an entry by a given id."
+	method_option :id, :type => :numeric, :required => true, :aliases => "-i", :desc => "The id number of entry to delete."
+	def delete
+		init
+		@db_persistence.delete_entry(options[:id])
+		if @db_persistence.db.changes > 0
+			present_message("Entry deleted.", :light_green)
+		else
+			present_message("Entry does not exist.", :light_red)
+		end
+
+		@db_persistence.close_db
+	end
+
+	private 
+
+	def init
+		@app_conf = Personal::AppConf.new
+		@app_conf.create_db_if_does_not_exist()
+		@db_persistence = Personal::DbPersistence.new(@app_conf.db_handle(@app_conf.db_path))
+	end
+
+	def present(rows)
+		if rows.size == 0
+			present_message "There are no entries.", :light_red
+		else
+			rows.each {|r| format(r)}
+		end
+	end
+
+	def format(row)
+		return "" unless row.class == Array
+		id = row[0]
+		creation_date = row[1].split(" ")[0]
+		creation_time = row[1].split(" ")[1]
+		text = row[2]
+
+		creation_date_string = creation_date.colorize(:color => :white, :background => :blue)
+		text_string = text.colorize(:light_green)
+		creation_time_string = creation_time.colorize(:color => :gray, :background => :black)
+		id_string = "id:#{id.to_s}".colorize(:color => :light_red)
+
+		puts "#{creation_date_string} #{text_string} @#{creation_time_string} #{id_string}\n\n" 
+	end
+
+	def present_message(text, color)
+		puts text.colorize(color)
+	end
+end
+
+PersonalCommand.start
+#db_persistence.close_db
+
