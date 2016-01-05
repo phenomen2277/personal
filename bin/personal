@@ -22,7 +22,7 @@ class PersonalCommand < Thor
 		@db_persistence.close_db
 	end
 
-	desc "latest", "List the latest entries that have been saved."
+	desc "latest", "List the latest entries that have been saved"
 	method_option :number, :type => :numeric, :required => false, :default => 10, :aliases => "-n", :desc => "The number of entries to list."
 	def latest
 		init
@@ -30,7 +30,7 @@ class PersonalCommand < Thor
 		@db_persistence.close_db
 	end
 
-	desc "add", "Add a new entry to the personal diary."
+	desc "add", "Add a new entry to the personal diary"
 	method_option :text, :type => :string, :required => true, :aliases => "-t", :desc => "The text to save."
 	def add
 		init
@@ -44,7 +44,7 @@ class PersonalCommand < Thor
 		@db_persistence.close_db
 	end
 
-	desc "delete", "Delete an entry by a given id."
+	desc "delete", "Delete an entry by a given id"
 	method_option :id, :type => :numeric, :required => true, :aliases => "-i", :desc => "The id number of entry to delete."
 	def delete
 		init
