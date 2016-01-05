@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{A personal diary console application.}
   spec.description   = %q{personal: is a command line diary application written in ruby and distributed as a gem. With personal, you will be able to save, edit and list the diary entries through the terminal. }
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/phenomen2277/personal"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
