@@ -30,6 +30,19 @@ class PersonalCommand < Thor
 		@db_persistence.close_db
 	end
 
+  desc "find", "find entry containing the given text"
+  method_option :text, :type => :string, :required => true, :aliases => "-t", :desc => "The text to find." 
+  def find
+  	if options[:text].include?("%") or options[:text].include?("_")
+  		present_message "The text must not contain % or _", :light_red
+  		return 
+  	end
+
+    init
+    present @db_persistence.find(options[:text])
+    @db_persistence.close_db
+  end
+
 	desc "add", "Add a new entry to the personal diary"
 	method_option :text, :type => :string, :required => true, :aliases => "-t", :desc => "The text to save."
 	def add

@@ -60,6 +60,10 @@ module Personal
         @db.execute("select * from (select * from personal order by created_at desc limit ?) order by created_at ASC", limit)
       end
 
+      def find(some_text)
+         @db.execute("select * from (select * from personal where data like ? order by created_at desc) order by created_at ASC", "%" + some_text + "%")
+      end
+
       def entries_by_year_and_month(year, month)
         @db.execute("select * from (select * from personal where cast(strftime('%Y', created_at) as integer) = ? and cast(strftime('%m', created_at) as integer) = ? order by created_at DESC) order by created_at ASC", year, month)
       end
