@@ -96,10 +96,10 @@ class PersonalCommand < Thor
 
 		creation_date_string = creation_date.colorize(:color => :white, :background => :blue)
 		text_string = text.colorize(:light_green)
-		creation_time_string = creation_time.colorize(:color => :gray, :background => :black)
-		id_string = "id:#{id.to_s}".colorize(:color => :light_red)
+		creation_time_string = creation_time.colorize(:color => :yellow, :background => :gray)
+		id_string = "id => #{id.to_s}".colorize(:color => :light_black)
 
-		puts "#{creation_date_string} #{text_string} @#{creation_time_string} #{id_string}\n\n" 
+		puts "#{creation_date_string} #{text_string} @#{creation_time_string} #{id_string}\n" 
 	end
 
 	def present_message(text, color)
