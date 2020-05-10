@@ -18,13 +18,13 @@ Gem::Specification.new do |spec|
   spec.bindir        = "bin"
   spec.executables   = ["personal"]
   spec.require_paths = ["lib"]
-  spec.required_ruby_version = ">= 2.0.0"
+  spec.required_ruby_version = ">= 2.7.0"
 
-  spec.add_runtime_dependency "sqlite3", "~> 1.3.11"
-  spec.add_runtime_dependency "thor", "~> 0.19.1"
-  spec.add_runtime_dependency "colorize", "~> 0.7.7"
+  spec.add_runtime_dependency "sqlite3", "~> 1.4.2"
+  spec.add_runtime_dependency "thor", "~> 1.0.1"
+  spec.add_runtime_dependency "colorize", "~> 0.8.1"
 
-  spec.add_development_dependency "bundler", "~> 1.11"
-  spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "bundler", "~> 2.1.2"
+  spec.add_development_dependency "rake", "~> 13.0.1"
   spec.add_development_dependency "minitest", "~> 5.0"
 end

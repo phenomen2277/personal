@@ -88,7 +88,7 @@ class PersonalCommand < Thor
 	end
 
 	def format(row)
-		return "" unless row.class == Array
+		return "" unless row.class == SQLite3::ResultSet::ArrayWithTypesAndFields
 		id = row[0]
 		creation_date = row[1].split(" ")[0]
 		creation_time = row[1].split(" ")[1]
