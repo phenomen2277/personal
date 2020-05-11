@@ -27,7 +27,7 @@ class PersonalCommand < Thor
 	end
 
 	desc "latest", "List the latest entries that have been saved"
-	method_option :number, :type => :numeric, :required => false, :default => 10, :aliases => "-n", :desc => "The number of entries to list."
+	method_option :number, :type => :numeric, :required => false, :default => 30, :aliases => "-n", :desc => "The number of entries to list."
 	def latest
 		init
 		present @db_persistence.latest_entries(options[:number])
@@ -94,16 +94,16 @@ class PersonalCommand < Thor
 	def format(row)
 		return "" unless row.class == SQLite3::ResultSet::ArrayWithTypesAndFields
 		id = row[0]
-		creation_date = row[1].split(" ")[0]
-		creation_time = row[1].split(" ")[1]
+		creation_date = " #{row[1].split(" ")[0]} "
+		creation_time = " #{row[1].split(" ")[1]} "
 		text = row[2]
 
-		creation_date_string = creation_date.colorize(:color => :white, :background => :blue)
+		creation_date_string = creation_date.colorize(:color => :black, :background => :light_blue)
 		text_string = text.colorize(:light_green)
-		creation_time_string = creation_time.colorize(:color => :yellow, :background => :gray)
-		id_string = "id => #{id.to_s}".colorize(:color => :light_black)
+		creation_time_string = creation_time.colorize(:color => :black, :background => :light_black)
+		id_string = "#{id.to_s}.".colorize(:color => :white)
 
-		puts "#{creation_date_string} #{text_string} @#{creation_time_string} #{id_string}\n" 
+		puts " #{id_string} #{creation_date_string} #{text_string} #{creation_time_string}\n" 
 	end
 
 	def present_message(text, color)
