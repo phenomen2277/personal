@@ -7,6 +7,10 @@ require "personal.rb"
 
 class PersonalCommand < Thor
 
+	def self.exit_on_failure?
+		true
+	end
+
 	desc "bydate", "List entries by given year,month and/or day"
 	method_option :year, :type => :numeric, :required => true, :aliases => "-y", :desc => "The year in YYYY-format."
 	method_option :month, :type => :numeric, :required => true, :aliases => "-m", :desc => "The month (1-12)."
